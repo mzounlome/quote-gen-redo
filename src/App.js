@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import React, { useState } from "react";
+import { getbyauthor, randomQuote } from "randomquote-api";
+
+import AuthorDisplay from "./Author/AuthorDisplay";
+import QuotesDisplay from "./Quotes/QuotesDisplay";
+import RandomBtn from "./Button/RandomBtn";
 
 function App() {
+  const [currentQuote, setCurrenteQuote] = useState(randomQuote());
+  const [authorQuotes, setAuthorQuotes] = useState([]);
+  const handleRandomQuote = () => {
+    setCurrenteQuote(randomQuote());
+  };
+  const handleAuthorQuotes = (name) => {
+    setAuthorQuotes(getbyauthor(name, 6));
+  };
+  console.log(currentQuote.author);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <RandomBtn
+        handleRandomQuote={handleRandomQuote}
+        setAuthorQuotes={setAuthorQuotes}
+      />
+      <QuotesDisplay currentQuote={currentQuote} authorQuotes={authorQuotes} />
+      <AuthorDisplay
+        handleAuthorQuotes={handleAuthorQuotes}
+        currentQuote={currentQuote}
+      />
     </div>
   );
 }
